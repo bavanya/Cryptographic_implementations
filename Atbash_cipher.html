@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Atbash Cipher</title>
+</head>
+
+<style> 
+    h1 {
+    text-align: center;
+    }
+
+    p {
+    text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      background-color: #f8f8f8;
+      font-size: 25px;
+      resize: none;
+    }
+
+    .button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #011102;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    }
+
+    .button:hover {background-color: #031603}
+
+    .button:active {
+    background-color: #020e02;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    }
+
+    .center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    }
+
+    .span_style_encrypt {
+        font-style: italic;
+        text-transform:uppercase;
+      }
+
+    .span_style_decrypt {
+        font-style: italic;
+        text-transform:lowercase;
+      }
+
+    .textBox2 {
+        text-transform:uppercase;
+    }
+</style>
+
+<body>
+    
+    <h1>Encryption using the Atbash Cipher</h1>
+    <div class="center">
+        <textarea id="textBox1" placeholder="PLAIN TEXT"></textarea>
+        <br>
+        <button  class="button" id="encipher">ENCIPHER</button>
+        <br>
+        <br>
+        <div>
+            <h2>Encrypted text: 
+                <mark><span class="span_style_encrypt"id="encipher_output"></span></mark>
+            </h2>
+        </div>
+        <br>
+        <br>
+        <h1>Decryption using the Atbash Cipher</h1>
+        <textarea id="textBox2" class="textBox2" placeholder="CIPHER TEXT"></textarea>
+        <br>
+        <button  class="button" id="decipher">DECIPHER</button>
+        <br>
+        <br>
+        <div>
+            <h2>Decrypted text: 
+                <mark><span class="span_style_decrypt" id="decipher_output"></span></mark>
+            </h2>
+        </div>
+    </div>
+
+    <script>
+        var list1 = [];
+        for(var i=0; i<26; i++)
+        {
+            list1.push(String.fromCharCode(97+i));
+        }
+
+        function convert(input){
+            var output = "";
+            for(var i=0; i<input.length; i++)
+            {
+                var character_code = input[i].charCodeAt();
+                if(character_code>=97 && character_code<=122){
+                    output+=list1[122-character_code]
+                }
+                else{
+                    output+= input[i];
+                }
+            }
+            return output;
+        }
+
+        document.querySelector("#encipher").addEventListener("click", function(){
+            document.getElementById("encipher_output").innerHTML = convert(document.querySelector("#textBox1").value.toLowerCase());
+        });
+
+        document.querySelector("#decipher").addEventListener("click", function(){
+            document.getElementById("decipher_output").innerHTML = convert(document.querySelector("#textBox2").value.toLowerCase());
+        });
+    </script>
+
+</body>
+</html>
