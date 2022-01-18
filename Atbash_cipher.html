@@ -100,19 +100,13 @@
     </div>
 
     <script>
-        var list1 = [];
-        for(var i=0; i<26; i++)
-        {
-            list1.push(String.fromCharCode(97+i));
-        }
-
         function convert(input){
             var output = "";
             for(var i=0; i<input.length; i++)
             {
                 var character_code = input[i].charCodeAt();
                 if(character_code>=97 && character_code<=122){
-                    output+=list1[122-character_code]
+                    output+=String.fromCharCode(219-character_code)
                 }
                 else{
                     output+= input[i];
@@ -128,7 +122,7 @@
         document.querySelector("#decipher").addEventListener("click", function(){
             document.getElementById("decipher_output").innerHTML = convert(document.querySelector("#textBox2").value.toLowerCase());
         });
-    </script>
+   </script>
 
 </body>
 </html>
