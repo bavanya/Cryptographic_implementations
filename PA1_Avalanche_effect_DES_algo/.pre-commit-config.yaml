@@ -9,7 +9,7 @@ repos:
     rev: stable
     hooks:
     - id: black
-      language_version: python3.8
+      language_version: python3.6
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.3
     hooks:
@@ -20,4 +20,4 @@ repos:
     hooks:
     - id: mypy
       args: [--no-strict-optional, --ignore-missing-imports, --strict-equality]
-      additional_dependencies: [numpy==1.19.2, torch==1.7.0]
+      additional_dependencies: [numpy==1.19.2]
