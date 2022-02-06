@@ -10,6 +10,10 @@ Main function demonstrating Avalanche effect in DES algorithm across the 16 roun
 '''
 
 def key_preparer(key, keyp, rkb, rk):
+	"""
+	Generates and stores the keys for all the 16 rounds of DES in rkb and rk lists.
+	"""
+
 	# Key generation
     # --hex to binary
 	key = hex2bin(key)
@@ -36,11 +40,19 @@ def key_preparer(key, keyp, rkb, rk):
 		rk.append(bin2hex(round_key))	
 
 def get_box_plots(delta_ct, save_plot_path):
+	"""
+	Generates and stores the box plots of the delta_ct results of our experiments.
+	"""
+
 	plt.boxplot(np.array(delta_ct).T.tolist())
 	plt.savefig(save_plot_path)
 	plt.show()
 
 def fill_delta_ct(pt, key, delta_ct, ct_first, is_first):
+	"""
+	Initiates the DES encryption and obtains the delta_ct list.
+	"""
+
 	rkb = []
 	rk = []
 
@@ -49,6 +61,10 @@ def fill_delta_ct(pt, key, delta_ct, ct_first, is_first):
 	return rkb, rk
 
 def get_delta_ct(pt, key, save_plot_path):
+	"""
+	Calls all the helper functions to complete the experiments end to end.
+	"""
+
 	delta_ct = []
 	ct_first = []	
 
@@ -61,9 +77,10 @@ def get_delta_ct(pt, key, save_plot_path):
 	get_box_plots(delta_ct, save_plot_path)
 
 def main():
+	"""
+	All the avalanche effect experiments are initiated here.
+	"""
 
-	#####################################################################################################################################################
-	#####################################################################################################################################################
 	#####################################################################################################################################################
 	print("Case 1: Five different plain texts at hemmming distance of 1 with a plain text.")
 	'''
@@ -75,8 +92,6 @@ def main():
 	get_delta_ct(pt, key, 'plots/case1.png')
 
 	#####################################################################################################################################################
-	#####################################################################################################################################################
-	#####################################################################################################################################################
 	print("Case 2: Five different plain texts at different hemmming distances with a plain text.")
 	'''
 	Case 2: Five different plain texts at different hemmming distances with a plain text.
@@ -86,8 +101,6 @@ def main():
 
 	get_delta_ct(pt, key, 'plots/case2.png')
 
-	#####################################################################################################################################################
-	#####################################################################################################################################################
 	#####################################################################################################################################################
 	print("Case 3: Five different secret keys at hemmming distance of 1 with a secret key.")
 	'''
@@ -106,8 +119,6 @@ def main():
 
 	get_box_plots(delta_ct, 'plots/case3.png')
 	
-	#####################################################################################################################################################
-	#####################################################################################################################################################
 	#####################################################################################################################################################
 
 main()

@@ -5,8 +5,13 @@ from tables import *
 '''
 DES encryption algorithm with helper functions.
 '''
+
 # calculating xor of two strings of binary number a and b
 def xor(a, b):
+	"""
+	Calculate the xor of two strings of binary number a and b.
+	"""
+
 	ans = ""
 	for i in range(len(a)):
 		if a[i] == b[i]:
@@ -16,11 +21,17 @@ def xor(a, b):
 	return ans
 
 def hamming(s1, s2):
-    """Calculate the Hamming distance between two bit strings"""
+    """
+	Calculate the Hamming distance between two bit strings
+	"""
     assert len(s1) == len(s2)
     return sum(c1 != c2 for c1, c2 in zip(s1, s2))
 
 def phase1(pt, initial_perm, no_of_bits_in_binary):
+	"""
+	Initial permutation phase of the DES algorithm where the bits are rearranged.
+	"""
+
 	pt = hex2bin(pt)
 	
 	# Initial Permutation
@@ -28,6 +39,13 @@ def phase1(pt, initial_perm, no_of_bits_in_binary):
 	return pt
 
 def phase2(pt, delta_ct_of_each_pk, rkb, rk, delta_ct, ct_first, is_first):
+	"""
+	The phase where the 16 rounds are performed in the DES algorithm.
+	Here:
+		Li = Ri-1 and
+		Ri = XOR(Li-1, F(Ri-1, ki))
+	"""
+
 	# Splitting
 	left = pt[0:32]
 	right = pt[32:64]
@@ -72,6 +90,10 @@ def phase2(pt, delta_ct_of_each_pk, rkb, rk, delta_ct, ct_first, is_first):
 	return left, right
 
 def phase3(left, right, no_of_bits_in_binary):
+	"""
+	This is phase 3 of the DES algorithm where final permutation is performed to get the cipher text in the DES algorithm.
+	"""
+
 	# Combination
 	combine = left + right
 	
@@ -79,6 +101,9 @@ def phase3(left, right, no_of_bits_in_binary):
 	cipher_text = permute(combine, final_perm, no_of_bits_in_binary)
 
 def encrypt(pt, rkb, rk, delta_ct, ct_first, is_first):
+	"""
+	DES encryption function which calles the DES phase functions to get the final cipher text.
+	"""
 
 	no_of_bits_in_binary = 64
 

@@ -1,15 +1,20 @@
 '''
 Functions for the manipulation of the arrangement of the bits.
 '''
-# Permute function to rearrange the bits
+
 def permute(k, arr, n):
+	"""
+	Permute function to rearrange the bits.
+	"""
 	permutation = ""
 	for i in range(0, n):
 		permutation = permutation + k[arr[i] - 1]
 	return permutation
 
-# shifting the bits towards left by nth shifts
 def shift_left(k, nth_shifts):
+	"""
+	Shifting the bits towards left by nth shifts.
+	"""
 	s = ""
 	for i in range(nth_shifts):
 		for j in range(1,len(k)):

@@ -1,8 +1,12 @@
 '''
 Functions for the conversion of data across hexadecimal, binary and decimal number systems.
 '''
-# Hexadecimal to binary conversion
+
 def hex2bin(s):
+	"""
+	Hexadecimal to binary conversion.
+	"""
+
 	mp = {'0' : "0000",
 		'1' : "0001",
 		'2' : "0010",
@@ -24,8 +28,11 @@ def hex2bin(s):
 		bin = bin + mp[s[i]]
 	return bin
 	
-# Binary to hexadecimal conversion
 def bin2hex(s):
+	"""
+	Binary to hexadecimal conversion.
+	"""
+
 	mp = {"0000" : '0',
 		"0001" : '1',
 		"0010" : '2',
@@ -53,9 +60,11 @@ def bin2hex(s):
 		
 	return hex
 
-# Binary to decimal conversion
 def bin2dec(binary):
-	
+	"""
+	Binary to decimal conversion.
+	"""
+
 	binary1 = binary
 	decimal, i, n = 0, 0, 0
 	while(binary != 0):
@@ -65,8 +74,11 @@ def bin2dec(binary):
 		i += 1
 	return decimal
 
-# Decimal to binary conversion
 def dec2bin(num):
+	"""
+	Decimal to binary conversion.
+	"""
+	
 	res = bin(num).replace("0b", "")
 	if(len(res)%4 != 0):
 		div = len(res) / 4
