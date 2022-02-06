@@ -3,7 +3,7 @@ from rearrange_bits import *
 from tables import *
 
 '''
-DES encryption algorithm with xor and hamming helper function.
+DES encryption algorithm with helper functions.
 '''
 # calculating xor of two strings of binary number a and b
 def xor(a, b):
@@ -20,17 +20,17 @@ def hamming(s1, s2):
     assert len(s1) == len(s2)
     return sum(c1 != c2 for c1, c2 in zip(s1, s2))
 
-def encrypt(pt, rkb, rk, delta_ct, ct_first, is_first):
+def phase1(pt, initial_perm, no_of_bits_in_binary):
 	pt = hex2bin(pt)
 	
 	# Initial Permutation
-	pt = permute(pt, initial_perm, 64)
-	
+	pt = permute(pt, initial_perm, no_of_bits_in_binary)
+	return pt
+
+def phase2(pt, delta_ct_of_each_pk, rkb, rk, delta_ct, ct_first, is_first):
 	# Splitting
 	left = pt[0:32]
 	right = pt[32:64]
-
-	delta_ct_of_each_pk = []
 
 	for i in range(0, 16):
 		# Expansion D-box: Expanding the 32 bits data into 48 bits
@@ -69,9 +69,23 @@ def encrypt(pt, rkb, rk, delta_ct, ct_first, is_first):
 	if(is_first == False):
 		delta_ct.append(delta_ct_of_each_pk)
 
+	return left, right
+
+def phase3(left, right, no_of_bits_in_binary):
 	# Combination
 	combine = left + right
 	
 	# Final permutation: final rearranging of bits to get cipher text
-	cipher_text = permute(combine, final_perm, 64)
+	cipher_text = permute(combine, final_perm, no_of_bits_in_binary)
+
+def encrypt(pt, rkb, rk, delta_ct, ct_first, is_first):
+
+	no_of_bits_in_binary = 64
+
+	pt = phase1(pt, initial_perm, no_of_bits_in_binary)
+
+	delta_ct_of_each_pk = []
+	left, right = phase2(pt, delta_ct_of_each_pk, rkb, rk, delta_ct, ct_first, is_first)
+
+	cipher_text = phase3(left, right, no_of_bits_in_binary)
 	return
