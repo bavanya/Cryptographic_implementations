@@ -42,10 +42,9 @@ def key_preparer(key, keyp, rkb, rk):
 
 
 def get_box_plots(delta_ct, save_plot_path):
-    """
-    Generates and stores the box plots of the delta_ct results of our experiments.
-    """
-
+    plt.title("Avalanche effect across DES rounds.")
+    plt.xlabel("Round no.")
+    plt.ylabel("Hemming distance between cipher texts.")
     plt.boxplot(np.array(delta_ct).T.tolist())
     plt.savefig(save_plot_path)
     plt.show()
