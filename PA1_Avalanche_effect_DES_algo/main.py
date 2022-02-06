@@ -8,6 +8,58 @@ from des_encryption import *
 '''
 Main function demonstrating Avalanche effect in DES algorithm across the 16 rounds.
 '''
+
+def key_preparer(key, keyp, rkb, rk):
+	# Key generation
+    # --hex to binary
+	key = hex2bin(key)
+
+    # getting 56 bit key from 64 bit using the parity bits
+	key = permute(key, keyp, 56)
+
+    # Splitting
+	left = key[0:28] # rkb for RoundKeys in binary
+	right = key[28:56] # rk for RoundKeys in hexadecimal
+
+	for i in range(0, 16):
+        # Shifting the bits by nth shifts by checking from shift table
+		left = shift_left(left, shift_table[i])
+		right = shift_left(right, shift_table[i])
+        
+        # Combination of left and right string
+		combine_str = left + right
+        
+        # Compression of key from 56 to 48 bits
+		round_key = permute(combine_str, key_comp, 48)
+
+		rkb.append(round_key)
+		rk.append(bin2hex(round_key))	
+
+def get_box_plots(delta_ct, save_plot_path):
+	plt.boxplot(np.array(delta_ct).T.tolist())
+	plt.savefig(save_plot_path)
+	plt.show()
+
+def fill_delta_ct(pt, key, delta_ct, ct_first, is_first):
+	rkb = []
+	rk = []
+
+	key_preparer(key, keyp, rkb, rk)
+	encrypt(pt, rkb, rk, delta_ct, ct_first, is_first)	
+	return rkb, rk
+
+def get_delta_ct(pt, key, save_plot_path):
+	delta_ct = []
+	ct_first = []	
+
+	rkb, rk = fill_delta_ct(pt[0], key, delta_ct, ct_first, True)
+
+	for i in range(1, 6):
+		encrypt(pt[i], rkb, rk, delta_ct, ct_first, False)
+		print(delta_ct[i-1])
+ 
+	get_box_plots(delta_ct, save_plot_path)
+
 def main():
 
 	#####################################################################################################################################################
@@ -18,46 +70,9 @@ def main():
 	Case 1: Five different plain texts at hemmming distance of 1 with a plain text.
 	'''
 	pt = ["123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536"] #"123456ABCD132536"
-	delta_ct = []
-	ct_first = []
 	key = "AABB09182736CCDD"
 
-	# Key generation
-    # --hex to binary
-	key = hex2bin(key)
-
-    # getting 56 bit key from 64 bit using the parity bits
-	key = permute(key, keyp, 56)
-
-    # Splitting
-	left = key[0:28] # rkb for RoundKeys in binary
-	right = key[28:56] # rk for RoundKeys in hexadecimal
-
-	rkb = []
-	rk = []
-	for i in range(0, 16):
-        # Shifting the bits by nth shifts by checking from shift table
-		left = shift_left(left, shift_table[i])
-		right = shift_left(right, shift_table[i])
-        
-        # Combination of left and right string
-		combine_str = left + right
-        
-        # Compression of key from 56 to 48 bits
-		round_key = permute(combine_str, key_comp, 48)
-
-		rkb.append(round_key)
-		rk.append(bin2hex(round_key))	
-
-	encrypt(pt[0], rkb, rk, delta_ct, ct_first, True)
-
-	for i in range(1, 6):
-		encrypt(pt[i], rkb, rk, delta_ct, ct_first, False)
-		print(delta_ct[i-1])
-
-	plt.boxplot(np.array(delta_ct).T.tolist())
-	plt.savefig('case1.png')
-	plt.show() 
+	get_delta_ct(pt, key, 'plots/case1.png')
 
 	#####################################################################################################################################################
 	#####################################################################################################################################################
@@ -66,48 +81,10 @@ def main():
 	'''
 	Case 2: Five different plain texts at different hemmming distances with a plain text.
 	'''
-
 	pt = ["123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536", "123456ABCD132536"] #"123456ABCD132536"
-	delta_ct = []
-	ct_first = []
 	key = "AABB09182736CCDD"
 
-	# Key generation
-    # --hex to binary
-	key = hex2bin(key)
-
-    # getting 56 bit key from 64 bit using the parity bits
-	key = permute(key, keyp, 56)
-
-    # Splitting
-	left = key[0:28] # rkb for RoundKeys in binary
-	right = key[28:56] # rk for RoundKeys in hexadecimal
-
-	rkb = []
-	rk = []
-	for i in range(0, 16):
-        # Shifting the bits by nth shifts by checking from shift table
-		left = shift_left(left, shift_table[i])
-		right = shift_left(right, shift_table[i])
-        
-        # Combination of left and right string
-		combine_str = left + right
-        
-        # Compression of key from 56 to 48 bits
-		round_key = permute(combine_str, key_comp, 48)
-
-		rkb.append(round_key)
-		rk.append(bin2hex(round_key))	
-
-	encrypt(pt[0], rkb, rk, delta_ct, ct_first, True)
-
-	for i in range(1, 6):
-		encrypt(pt[i], rkb, rk, delta_ct, ct_first, False)
-		print(delta_ct[i-1])
-
-	plt.boxplot(np.array(delta_ct).T.tolist())
-	plt.savefig('case2.png')
-	plt.show() 
+	get_delta_ct(pt, key, 'plots/case2.png')
 
 	#####################################################################################################################################################
 	#####################################################################################################################################################
@@ -120,68 +97,15 @@ def main():
 	key = ["AABB09182736CCDD", "AABB09182736CCDD", "AABB09182736CCDD", "AABB09182736CCDD", "AABB09182736CCDD", "AABB09182736CCDD"] #"AABB09182736CCDD"
 	delta_ct = []
 	ct_first = []
-
-	# Key generation
-    # --hex to binary
-	key[0] = hex2bin(key[0])
-
-	# getting 56 bit key from 64 bit using the parity bits
-	key[0] = permute(key[0], keyp, 56)
-
-    # Splitting
-	left = key[0][0:28] # rkb for RoundKeys in binary
-	right = key[0][28:56] # rk for RoundKeys in hexadecimal
-
-	rkb = []
-	rk = []
-	for i in range(0, 16):
-        # Shifting the bits by nth shifts by checking from shift table
-		left = shift_left(left, shift_table[i])
-		right = shift_left(right, shift_table[i])
-        
-        # Combination of left and right string
-		combine_str = left + right
-        
-        # Compression of key from 56 to 48 bits
-		round_key = permute(combine_str, key_comp, 48)
-
-		rkb.append(round_key)
-		rk.append(bin2hex(round_key))	
-
-	encrypt(pt, rkb, rk, delta_ct, ct_first, True)
+	
+	fill_delta_ct(pt, key[0], delta_ct, ct_first, True)
 
 	for j in range(1, 6):
-		key[j] = hex2bin(key[j])
-
-    	# getting 56 bit key from 64 bit using the parity bits
-		key[j] = permute(key[j], keyp, 56)
-
-		# Splitting
-		left = key[j][0:28] # rkb for RoundKeys in binary
-		right = key[j][28:56] # rk for RoundKeys in hexadecimal
-
-		rkb = []
-		rk = []
-		for i in range(0, 16):
-			# Shifting the bits by nth shifts by checking from shift table
-			left = shift_left(left, shift_table[i])
-			right = shift_left(right, shift_table[i])
-			
-			# Combination of left and right string
-			combine_str = left + right
-			
-			# Compression of key from 56 to 48 bits
-			round_key = permute(combine_str, key_comp, 48)
-
-			rkb.append(round_key)
-			rk.append(bin2hex(round_key))	
-
-		encrypt(pt, rkb, rk, delta_ct, ct_first, False)
+		fill_delta_ct(pt, key[j], delta_ct, ct_first, False)
 		print(delta_ct[j-1])	
 
-	plt.boxplot(np.array(delta_ct).T.tolist())
-	plt.savefig('case3.png')
-	plt.show() 
+	get_box_plots(delta_ct, 'plots/case3.png')
+	
 	#####################################################################################################################################################
 	#####################################################################################################################################################
 	#####################################################################################################################################################
