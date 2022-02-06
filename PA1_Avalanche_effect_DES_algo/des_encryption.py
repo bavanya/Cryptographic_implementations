@@ -114,3 +114,4 @@ def encrypt(pt, rkb, rk, delta_ct, ct_first, is_first):
 
 	cipher_text = phase3(left, right, no_of_bits_in_binary)
 	return
+	

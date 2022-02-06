@@ -23,3 +23,4 @@ def shift_left(k, nth_shifts):
 		k = s
 		s = ""
 	return k
+	

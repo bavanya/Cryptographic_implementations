@@ -78,7 +78,7 @@ def dec2bin(num):
 	"""
 	Decimal to binary conversion.
 	"""
-	
+
 	res = bin(num).replace("0b", "")
 	if(len(res)%4 != 0):
 		div = len(res) / 4
@@ -87,3 +87,4 @@ def dec2bin(num):
 		for i in range(0, counter):
 			res = '0' + res
 	return res
+	
