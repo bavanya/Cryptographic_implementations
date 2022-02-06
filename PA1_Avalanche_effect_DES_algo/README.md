@@ -1,8 +1,8 @@
 ### Practical Assignment 1 -
 Demonstrating the Avalanche effect observed in the rounds of the DES algorithm.
 
-Three experiments were performed and the results are plotted as a box plot to understand
-the extend of the Avalanche effect in each of the three experiments.
+Three experiments are performed and the results are plotted as a box plot to understand
+the extent of the Avalanche effect in each of the three experiments.
 
 #### Experiments are as follows:
 
